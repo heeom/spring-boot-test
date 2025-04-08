@@ -17,15 +17,16 @@ public class TargetServiceImpl implements TargetService {
     public void doSomething() {
         log.info("{} : doSomething() - isNewTransaction: {}", this.getClass(), TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
         log.info("{} : doSomething() - isActualTransactionActive: {}", this.getClass(), TransactionSynchronizationManager.isActualTransactionActive());
-
+        log.info("TargetService.doSomething() - getCurrentTransactionName: {}", TransactionSynchronizationManager.getCurrentTransactionName());
         log.info("TargetServiceImpl doSomething throw RuntimeException");
         throw new RuntimeException();
     }
 
     @Override
     public void doSomething(String message) {
-        log.info("TargetService.doSomething() - isNewTransaction: {}", TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
-        log.info("TargetService.doSomething() - isActualTransactionActive: {}", TransactionSynchronizationManager.isActualTransactionActive());
+        log.info("TargetService.doSomething({}) - isNewTransaction: {}", message, TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
+        log.info("TargetService.doSomething({}) - isActualTransactionActive: {}", message, TransactionSynchronizationManager.isActualTransactionActive());
+        log.info("TargetService.doSomething({}) - getCurrentTransactionName: {}", message, TransactionSynchronizationManager.getCurrentTransactionName());
 
         throw new RuntimeException(message);
     }
