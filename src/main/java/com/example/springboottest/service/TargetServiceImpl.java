@@ -9,14 +9,14 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TargetServiceImpl implements TargetService {
 
     @Override
+    @Transactional
     public void doSomething() {
+        log.info("{} : doSomething() - isNewTransaction: {}", this.getClass(), TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
         log.info("{} : doSomething() - isActualTransactionActive: {}", this.getClass(), TransactionSynchronizationManager.isActualTransactionActive());
-        log.info("{} : doSomething() - CurrentTransactionName : {}", this.getClass(), TransactionAspectSupport.currentTransactionStatus().getTransactionName());
 
         log.info("TargetServiceImpl doSomething throw RuntimeException");
         throw new RuntimeException();

@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @Service
@@ -20,6 +19,7 @@ public class CallerServiceImpl implements CallerService {
     @Override
     @Transactional(noRollbackFor = RuntimeException.class)
     public void call(String message) {
+        log.info("call() - isNewTransaction: {}", TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
         log.info("targetService is proxy: {}", targetService.getClass()); // TargetServiceImpl$$SpringCGLIB$$0 proxy
         logRepository.save(new LogEntry(message));
         targetService.doSomething();
