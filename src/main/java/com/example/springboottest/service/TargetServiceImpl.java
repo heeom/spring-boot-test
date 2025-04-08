@@ -21,4 +21,12 @@ public class TargetServiceImpl implements TargetService {
         log.info("TargetServiceImpl doSomething throw RuntimeException");
         throw new RuntimeException();
     }
+
+    @Override
+    public void doSomething(String message) {
+        log.info("TargetService.doSomething() - isNewTransaction: {}", TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
+        log.info("TargetService.doSomething() - isActualTransactionActive: {}", TransactionSynchronizationManager.isActualTransactionActive());
+
+        throw new RuntimeException(message);
+    }
 }

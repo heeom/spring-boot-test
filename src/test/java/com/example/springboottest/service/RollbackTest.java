@@ -2,7 +2,6 @@ package com.example.springboottest.service;
 
 import com.example.springboottest.domain.LogRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.TransactionException;
 import org.junit.jupiter.api.*;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
