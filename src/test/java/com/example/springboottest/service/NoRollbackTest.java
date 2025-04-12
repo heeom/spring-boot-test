@@ -9,11 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.UnexpectedRollbackException;
 
 @Slf4j
 @SpringBootTest
-class noRollbackTest {
+class NoRollbackTest {
 
     @Autowired
     CallerService callerService;
@@ -27,7 +26,7 @@ class noRollbackTest {
     }
 
     @Test
-    @DisplayName("호출하는 메서드에만 @Transactional이 있는 경우 호출 되는 메서드는 프록시 생성 안됨 -> noRollback 설정 적용됨")
+    @DisplayName("호출하는 메서드에만 @Transactional이 있는 경우 호출 되는 메서드는 advice 실행 안됨 -> noRollback 설정 적용됨")
     void noRollbackFor_shouldBeCommitted() {
         String message = "no-rollback-test";
         Assertions.assertThrows(RuntimeException.class, () -> {
