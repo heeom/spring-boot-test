@@ -1,9 +1,12 @@
 package com.example.springboottest.deserialization;
 
+import com.example.springboottest.data.TestData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +15,8 @@ import org.junit.jupiter.api.Test;
 public class DeserializationTest {
 
     private ObjectMapper objectMapper;
-    private final String message = "{\"key\": \"value\"}";
+    private final String message = "{\"key\": \"value\", \"value\": \"key\"}";
+    private final String testDataMessage = "{\"param1\": \"value1\", \"param2\": \"value2\"}";
 
     @BeforeEach
     public void init() {
@@ -21,7 +25,7 @@ public class DeserializationTest {
 
     @Test
     @DisplayName("역직렬화 대상 클래스에 기본생성자가 존재하지 않으면 역직렬화시 예외가 발생한다")
-    public void notExistsNoArgsConstructorThenThrowException() {
+    public void notExistsNoArgsConstructorThenThrowException() throws JsonProcessingException {
         Assertions.assertThrows(JsonProcessingException.class, () -> objectMapper.readValue(message, Message.class));
     }
 
@@ -32,8 +36,25 @@ public class DeserializationTest {
         Assertions.assertEquals("value", result.getKey());
     }
 
+    @Test
+    @DisplayName("@NoArgsConstructor (X), @Getter (O) private 필드는 역직렬화에 성공한다.")
+    public void deserializeWithNoArgsConstructorThenSuccess() throws JsonProcessingException {
+        com.example.springboottest.data.TestData testData = objectMapper.readValue(testDataMessage, com.example.springboottest.data.TestData.class);
+        Assertions.assertEquals("value2", testData.getParam2());
+    }
+
+    @Test
+    @DisplayName("private 필드 기준 기본생성자 X, getter X, JsonProperty X, ObjectMapper FAIL_ON_UNKNOWN_PROPERTIES = false 이면 역직렬화 성공한다.")
+    public void deserializeSuccessTest() throws JsonProcessingException {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Message result = objectMapper.readValue(message, Message.class);
+        Assertions.assertNull(result.key);
+        Assertions.assertEquals("key", result.value);
+    }
+
     static class Message {
         private String key;
+        public String value;
     }
 
     static class Example {
@@ -47,5 +68,11 @@ public class DeserializationTest {
         public String getKey() {
             return key;
         }
+    }
+
+    @Getter
+    static class TestData {
+        @JsonProperty("key")
+        private String key;
     }
 }
