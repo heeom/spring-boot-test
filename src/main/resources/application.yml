@@ -12,10 +12,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql: trace
     org.springframework.transaction.interceptor: trace
+
 
