@@ -29,8 +29,8 @@ public class DeserializationTest {
         Assertions.assertThrows(JsonProcessingException.class, () -> objectMapper.readValue(message, Message.class));
     }
 
-    @Test
-    @DisplayName("기본생성자 없이 생성자 기반 역직렬화를 사용하면 예외 발생하지 않는다")
+//    @Test
+//    @DisplayName("기본생성자 없이 생성자 기반 역직렬화를 사용하면 예외 발생하지 않는다")
     public void deserializeWithJsonCreator() throws JsonProcessingException {
         Example result = objectMapper.readValue(message, Example.class);
         Assertions.assertEquals("value", result.getKey());

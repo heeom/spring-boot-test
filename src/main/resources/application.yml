@@ -2,7 +2,7 @@ spring:
   application:
     name: spring-boot-test
   datasource:
-    url: jdbc:mysql://localhost:3306/test
+    url: jdbc:mysql://db:3306/test
     username: root
     password: 1234
   jpa:
