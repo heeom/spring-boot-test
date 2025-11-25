@@ -21,10 +21,13 @@ logging:
     org.hibernate.type.descriptor.sql: trace
     org.springframework.transaction.interceptor: trace
   pattern:
-    correlation: "[${spring.application.name:}]TRACE_ID[%X{traceId}]SPAN_ID[%X{spanId}] " #Boot 3.2+ 에서 사용 가능
+    correlation: "TRACE_ID[%X{traceId:-}]SPAN_ID[%X{spanId:-}] "
+
 management:
   tracing:
     sampling:
       probability: 1.0
+    propagation:
+      type: b3
 
 
